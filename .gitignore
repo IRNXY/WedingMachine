@@ -1,7 +1,8 @@
 node_modules
 .idea
 .env
-Dockerfile
 .package-lock.json
 .gitignore
 .gitattributes
+.dockerignore
+src/tools/requests.txt

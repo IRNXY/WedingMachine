@@ -15,6 +15,7 @@ class Machine {
                 description: "Unavailable to insert coins because machine has broken"
             });
         }
+
         this.credit += amount;
         return this.credit;
     }
