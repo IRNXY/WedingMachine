@@ -1,6 +1,6 @@
-class Machine {
-    static instance = null;
+const Slot = require("../models/Slot");
 
+class Machine {
     constructor() {
         this.temperature = 20;
         this.credit = 0;
@@ -21,18 +21,18 @@ class Machine {
         const slot = this.find_slot(data.id);
 
         if (slot) {
-            slot.restock(data);
+            slot.restock(data.product, data.price, data.stock);
             return slot;
+        }else{
+            const newSlot = new Slot(data.id, data.product, data.price, data.stock);
+            this.slots.push(newSlot);
+
+            return newSlot;
         }
-
-        const newSlot = new Slot(data);
-        this.slots.push(newSlot);
-
-        return newSlot;
     }
 
-    buy_product(slotId) {
-        const slot = this.find_slot(slotId);
+    buy_product(slot_id) {
+        const slot = this.find_slot(slot_id);
 
         if (!slot) {
             throw new Error("Slot not found");
@@ -57,7 +57,7 @@ class Machine {
 
         return {
             product: slot.product,
-            remainingCredit: this.credit
+            remaining_credit: this.credit
         };
     }
 
