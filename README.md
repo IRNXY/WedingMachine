@@ -236,3 +236,25 @@ curl http://localhost:3000/machine
   "remaining_credit": 30
 }
 ```
+
+---
+
+# Примеры запросов
+
+### Проверка состояния
+```curl -X GET http://localhost:3000/machine```
+### Добавить товар
+```curl -X POST http://localhost:3000/machine/insert -H "Content-Type: application/json" -d "{\"amount\":100}" ```
+### Внести деньги
+``` ```
+### Купить товар
+```curl.exe -X POST http://localhost:3000/machine/select -H "Content-Type: application/json" -d "{\"slotId\":1}"```
+### Починить автомат
+```curl.exe -X POST http://localhost:3000/machine/maintain ```
+
+## Пример обработки ошибок
+
+## Недостаточно средств, чтобы купить товар
+```curl.exe -X POST http://localhost:3000/machine/select -H "Content-Type: application/json" -d "{\"slotId\":1}" ```
+## Не существует товара с данным id
+```curl.exe -X POST http://localhost:3000/machine/select -H "Content-Type: application/json" -d "{\"slotId\":2}" ```

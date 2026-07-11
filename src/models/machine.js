@@ -10,10 +10,12 @@ class Machine {
 
     insert_coins(amount) {
          if (this.get_status() === "broken"){
-            throw new Error("Machine has broken", {
-                error_code: 409,
-                description: "Unavailable to insert coins because machine has broken"
-            });
+            const error = new Error("Machine has broken");
+
+            error.error_code = 409;
+            error.description = "Unavailable to update a product because machine has broken";
+
+            throw  error;
         }
 
         this.credit += amount;
@@ -26,10 +28,12 @@ class Machine {
 
     update_slot(data) {
         if (this.get_status() === "broken"){
-            throw new Error("Machine has broken", {
-                error_code: 409,
-                description: "Unavailable to update a product because machine has broken"
-            });
+            const error = new Error("Machine has broken");
+
+            error.error_code = 409;
+            error.description = "Unavailable to update a product because machine has broken";
+
+            throw  error;
         }
 
         const slot = this.find_slot(data.id);
@@ -49,38 +53,49 @@ class Machine {
         const slot = this.find_slot(slot_id);
 
         if (this.get_status() === "broken"){
-            throw new Error("Machine has broken", {
-                error_code: 409,
-                description: "Unavailable to buy a product because machine has broken"
-            });
+            const error = new Error("Machine has broken");
+
+            error.error_code = 409;
+            error.description = "Unavailable to buy a product because machine has broken";
+
+            throw  error;
         }
 
         if (!slot) {
-            throw new Error("Slot not found", {
-                error_code: 404,
-                description: `No slot found with the specified id = ${slot_id}`
-            });
+            const error = new Error("Slot not found");
+
+            error.error_code = 404;
+            error.description = `No slot found with the specified id = ${slot_id}`;
+
+            throw  error;
         }
 
         if (slot.is_empty()) {
-            throw new Error("Product out of stock", {
-                error_code: 409,
-                description: `${slot.stock} products left with this id = ${slot_id}`
-            });
+            const error = new Error("Product out of stock");
+
+            error.error_code = 409;
+            error.description = `${slot.stock} products left with this id = ${slot_id}`;
+
+            throw  error;
+
         }
 
         if (!slot.is_fresh()) {
-            throw new Error("Product is not fresh", {
-                error_code: 409,
-                description: `Products has spoiled with this id = ${slot_id}`
-            });
+            const error = new Error("Product is not fresh");
+
+            error.error_code = 409;
+            error.description = `Products has spoiled with this id = ${slot_id}`;
+
+            throw  error;
         }
 
         if (this.credit < slot.price) {
-            throw new Error("Not enough credit", {
-                error_code: 400,
-                description: `Actual cost of a product with id = ${slot_id} is ${slot.price} and value of credit is ${this.credit}`
-            });
+            const error = new Error("Not enough credit");
+
+            error.error_code = 400;
+            error.description = `Actual cost of a product with id = ${slot_id} is ${slot.price} and value of credit is ${this.credit}`;
+
+            throw  error;
         }
 
         this.credit -= slot.price;
@@ -121,10 +136,12 @@ class Machine {
 
     maintain() {
         if (this.get_status() === "broken"){
-            throw new Error("Machine has broken. Not possible to maintain", {
-                error_code: 409,
-                description: `Temperature (actual value: ${this.temperature}) is greater than 100`
-            });
+            const error = new Error("Machine has broken. Not possible to maintain");
+
+            error.error_code = 409;
+            error.description =  `Temperature (actual value: ${this.temperature}) is greater than 100`;
+
+            throw  error;
         }else{
             this.temperature = Math.max(0, this.temperature - 30);
             return {
