@@ -1,0 +1,6 @@
+{"timestamp":"2026-07-11T13:07:04.705Z","method":"GET","url":"/machine","params":{},"query":{},"status":304,"response":{"temperature":20,"credit":0,"revenue":0,"status":"operational","slots":[]},"duration":"1 ms"}
+{"timestamp":"2026-07-11T13:07:05.946Z","method":"GET","url":"/machine","params":{},"query":{},"status":304,"response":{"temperature":20,"credit":0,"revenue":0,"status":"operational","slots":[]},"duration":"1 ms"}
+{"timestamp":"2026-07-11T13:07:32.059Z","method":"GET","url":"/machine","params":{},"query":{},"status":304,"response":{"temperature":20,"credit":0,"revenue":0,"status":"operational","slots":[]},"duration":"0 ms"}
+{"timestamp":"2026-07-11T13:07:34.675Z","method":"GET","url":"/machine","params":{},"query":{},"status":304,"response":{"temperature":20,"credit":0,"revenue":0,"status":"operational","slots":[]},"duration":"1 ms"}
+{"timestamp":"2026-07-11T13:07:45.991Z","method":"GET","url":"/machine","params":{},"query":{},"status":304,"response":{"temperature":20,"credit":0,"revenue":0,"status":"operational","slots":[]},"duration":"1 ms"}
+{"timestamp":"2026-07-11T13:07:54.097Z","method":"GET","url":"/machine","params":{},"query":{},"status":200,"response":{"temperature":23,"credit":0,"revenue":0,"status":"operational","slots":[]},"duration":"2 ms"}

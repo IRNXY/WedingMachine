@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const file = path.join(__dirname, "../tools/requests.json");
+const file = path.join(__dirname, "../tools/requests.txt");
 
 function logger(req, res, next) {
 
