@@ -1,8 +1,16 @@
-const machine = require("../models/Machine");
+const machine = require("../models/machine");
 
-console.log("===== Initial state =====");
-console.log(machine.get_state());
+function check(description, condition) {
+    if (condition) {
+        console.log(`✅ ${description}`);
+    } else {
+        console.log(`❌ ${description}`);
+    }
+}
 
+console.log("===== Testing Machine =====");
+
+// Restock
 machine.update_slot({
     id: 1,
     product: "Cola",
@@ -10,35 +18,47 @@ machine.update_slot({
     stock: 5
 });
 
-machine.update_slot({
-    id: 2,
-    product: "Water",
-    price: 80,
-    stock: 3
-});
+let slot = machine.find_slot(1);
 
-console.log("\n===== After restock =====");
-console.log(machine.get_state());
+check("Slot was created", slot !== undefined);
+check("Product name is Cola", slot.product === "Cola");
+check("Stock is 5", slot.stock === 5);
+check("Freshness is 100", slot.freshness === 100);
 
+// Insert coins
 machine.insert_coins(300);
 
-console.log("\n===== After insert =====");
-console.log(machine.get_state());
+check("Credit is 300", machine.credit === 300);
 
+// Buy product
 const purchase = machine.buy_product(1);
 
-console.log("\n===== Purchase =====");
-console.log(purchase);
+check("Bought Cola", purchase.product === "Cola");
+check("Credit is 180", machine.credit === 180);
+check("Revenue is 120", machine.revenue === 120);
+check("Stock decreased", machine.find_slot(1).stock === 4);
 
-console.log("\n===== Machine state =====");
-console.log(machine.get_state());
+// Tick
+const oldTemperature = machine.temperature;
+const oldFreshness = machine.find_slot(1).freshness;
 
 machine.tick();
 
-console.log("\n===== After tick =====");
-console.log(machine.get_state());
+check("Temperature increased by 3",
+    machine.temperature === oldTemperature + 3);
+
+check("Freshness decreased by 1",
+    machine.find_slot(1).freshness === oldFreshness - 1);
+
+// Maintain
+const temperatureBefore = machine.temperature;
 
 machine.maintain();
 
-console.log("\n===== After maintain =====");
+check(
+    "Temperature decreased by 30",
+    machine.temperature === Math.max(0, temperatureBefore - 30)
+);
+
+console.log("\n===== Final state =====");
 console.log(machine.get_state());

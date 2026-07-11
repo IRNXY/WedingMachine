@@ -1,10 +1,12 @@
 const express = require("express");
 
-const machine = require("./models/Machine");
+const machine = require("./models/machine");
 const machineRoutes = require("./routes/machine_route");
+const logger = require("./tools/logger");
 
 const app = express();
 
+app.use(logger);
 app.use(express.json());
 
 machine.start();

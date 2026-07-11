@@ -1,4 +1,4 @@
-const Slot = require("../models/Slot");
+const Slot = require("../models/slot");
 
 class Machine {
     constructor() {
@@ -9,6 +9,12 @@ class Machine {
     }
 
     insert_coins(amount) {
+         if (this.get_status() === "broken"){
+            throw new Error("Machine has broken", {
+                error_code: 409,
+                description: "Unavailable to insert coins because machine has broken"
+            });
+        }
         this.credit += amount;
         return this.credit;
     }
@@ -18,6 +24,13 @@ class Machine {
     }
 
     update_slot(data) {
+        if (this.get_status() === "broken"){
+            throw new Error("Machine has broken", {
+                error_code: 409,
+                description: "Unavailable to update a product because machine has broken"
+            });
+        }
+
         const slot = this.find_slot(data.id);
 
         if (slot) {
@@ -34,20 +47,39 @@ class Machine {
     buy_product(slot_id) {
         const slot = this.find_slot(slot_id);
 
+        if (this.get_status() === "broken"){
+            throw new Error("Machine has broken", {
+                error_code: 409,
+                description: "Unavailable to buy a product because machine has broken"
+            });
+        }
+
         if (!slot) {
-            throw new Error("Slot not found");
+            throw new Error("Slot not found", {
+                error_code: 404,
+                description: `No slot found with the specified id = ${slot_id}`
+            });
         }
 
         if (slot.is_empty()) {
-            throw new Error("Product out of stock");
+            throw new Error("Product out of stock", {
+                error_code: 409,
+                description: `${slot.stock} products left with this id = ${slot_id}`
+            });
         }
 
         if (!slot.is_fresh()) {
-            throw new Error("Product is not fresh");
+            throw new Error("Product is not fresh", {
+                error_code: 409,
+                description: `Products has spoiled with this id = ${slot_id}`
+            });
         }
 
         if (this.credit < slot.price) {
-            throw new Error("Not enough credit");
+            throw new Error("Not enough credit", {
+                error_code: 400,
+                description: `Actual cost of a product with id = ${slot_id} is ${slot.price} and value of credit is ${this.credit}`
+            });
         }
 
         this.credit -= slot.price;
@@ -82,13 +114,23 @@ class Machine {
 
     tick() {
         this.temperature += 3;
-
         this.slots.forEach(slot => slot.decrease_freshness());
     }
 
 
     maintain() {
-        this.temperature = Math.max(0, this.temperature - 30);
+        if (this.get_status() === "broken"){
+            throw new Error("Machine has broken. Not possible to maintain", {
+                error_code: 409,
+                description: `Temperature (actual value: ${this.temperature}) is greater than 100`
+            });
+        }else{
+            this.temperature = Math.max(0, this.temperature - 30);
+            return {
+                temperature: this.temperature,
+                status: this.get_status()
+            }
+        }
     }
 
     get_state() {
