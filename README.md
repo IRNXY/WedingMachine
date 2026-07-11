@@ -25,7 +25,6 @@ REST API для управления вендинговым автоматом (
 Содержит описание HTTP маршрутов и связывает запросы с контроллерами.
 
 ---
----
 ## Tools
 
 Middleware для логирования HTTP-запросов
@@ -50,7 +49,7 @@ Middleware для логирования HTTP-запросов
 {
   "timestamp": "2026-07-11T10:20:30.000Z",
   "method": "POST",
-  "url": "/machine/buy",
+  "url": "/machine/select",
   "params": {},
   "query": {},
   "body": {
@@ -58,7 +57,8 @@ Middleware для логирования HTTP-запросов
   },
   "status": 200,
   "response": {
-    "product": "Water"
+      "product": "COLA",
+      "remaining_credit": 30
   },
   "duration": "12 ms"
 }
